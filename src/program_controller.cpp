@@ -1,5 +1,6 @@
 #include <iostream>
 #include "program_controller.h"
+#include "vector_2.h"
 
 void program_controller::init()
 {
@@ -15,3 +16,4 @@ void program_controller::run()
 		// loop until exit
 	}
 }
+
