@@ -32,3 +32,8 @@ vector_2 vector_2::operator+(vector_2 const &v)
 	double sum_y = y + v.get_y();
 	return vector_2(sum_x, sum_y);
 }
+
+vector_2 vector_2::operator*(int const &i)
+{
+	return vector_2(x * i, y * i);
+}
