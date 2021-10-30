@@ -12,8 +12,8 @@ void program_controller::run()
 	// todo - change this to return a status code for exit
 	std::cout << "program controller started" << std::endl;
 
-	for (;;) {
+	for (;;)
+	{
 		// loop until exit
 	}
 }
-
