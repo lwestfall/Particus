@@ -12,6 +12,11 @@ void program_controller::run()
 	// todo - change this to return a status code for exit
 	std::cout << "program controller started" << std::endl;
 
+	particle_ctrl.init();
+	std::cout << "particle controller initialized w/ "
+			  << particle_ctrl.get_particle_count()
+			  << " random particles." << std::endl;
+
 	for (;;)
 	{
 		// loop until exit
