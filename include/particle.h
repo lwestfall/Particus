@@ -7,7 +7,7 @@
 class particle
 {
 public:
-    particle(double x, double y);
+    particle(double x, double y, uint64_t millis);
     void update_position(double x, double y);
     void update_velocity(vector_2 accel, uint64_t millis);
 

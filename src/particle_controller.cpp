@@ -1,5 +1,10 @@
 #include "particle_controller.h"
 
+particle_controller::particle_controller(time_master *time_mstr)
+{
+    this->time_mstr = time_mstr;
+}
+
 void particle_controller::init()
 {
     // generate 50-100 particles
@@ -10,13 +15,16 @@ void particle_controller::init()
         // random x and y position within bounds
         int rand_x = rand() % 64;
         int rand_y = rand() % 32;
-        particles.push_back(particle(rand_x, rand_y));
+        particles.push_back(particle(rand_x, rand_y, time_mstr->millis_since_start()));
     }
 }
 
-void particle_controller::do_time_step()
+void particle_controller::do_time_step(vector_2 accel)
 {
-    // todo
+    for (auto &particle : particles)
+    {
+        particle.update_velocity(accel, time_mstr->millis_since_start());
+    }
 }
 
 int particle_controller::get_particle_count()

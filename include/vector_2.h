@@ -9,6 +9,7 @@ public:
 	double get_y() const;
 	void set_x(double new_x);
 	void set_y(double new_y);
+	void print_coords();
 	vector_2 operator+(vector_2 const &v);
 	vector_2 operator*(int const &i);
 

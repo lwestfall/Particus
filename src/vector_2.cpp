@@ -1,3 +1,5 @@
+#include <iostream>
+#include <iomanip>
 #include "vector_2.h"
 
 vector_2::vector_2(double x, double y)
@@ -24,6 +26,12 @@ void vector_2::set_x(double new_x)
 void vector_2::set_y(double new_y)
 {
 	y = new_y;
+}
+
+void vector_2::print_coords()
+{
+	std::cout << std::fixed << std::showpoint;
+	std::cout << std::setprecision(8) << x << " x " << y;
 }
 
 vector_2 vector_2::operator+(vector_2 const &v)
