@@ -12,6 +12,7 @@ public:
 	void print_coords();
 	vector_2 operator+(vector_2 const &v);
 	vector_2 operator*(int const &i);
+	vector_2 operator*(double const &i);
 
 private:
 	double x;

@@ -12,10 +12,12 @@ public:
     void init();
     void do_time_step(vector_2 accel);
     int get_particle_count();
+    void reset_step_time();
 
 private:
     // todo accelerometer_controller accel_ctrl;
     std::vector<particle> particles;
+    uint64_t last_step_millis;
     time_master *time_mstr;
 };
 

@@ -29,6 +29,7 @@ void program_controller::run()
 	std::cout << "accelerometer controller initialized" << std::endl;
 
 	const unsigned int FRAME_MAX_TIME_MILLIS = 1000 / 30;
+	particle_ctrl.reset_step_time();
 
 	for (;;)
 	{
@@ -41,6 +42,7 @@ void program_controller::run()
 		uint64_t time_taken = time_mstr.millis_since_start() - now_millis;
 		time_mstr.print_time();
 		std::cout << "Frame took " << time_taken << " ms." << std::endl;
+
 		if (time_taken < FRAME_MAX_TIME_MILLIS)
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(FRAME_MAX_TIME_MILLIS - time_taken));

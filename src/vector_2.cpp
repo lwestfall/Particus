@@ -31,7 +31,7 @@ void vector_2::set_y(double new_y)
 void vector_2::print_coords()
 {
 	std::cout << std::fixed << std::showpoint;
-	std::cout << std::setprecision(8) << x << " x " << y;
+	std::cout << std::setprecision(3) << x << " x " << y;
 }
 
 vector_2 vector_2::operator+(vector_2 const &v)
@@ -44,4 +44,9 @@ vector_2 vector_2::operator+(vector_2 const &v)
 vector_2 vector_2::operator*(int const &i)
 {
 	return vector_2(x * i, y * i);
+}
+
+vector_2 vector_2::operator*(double const &d)
+{
+	return vector_2(x * d, y * d);
 }

@@ -15,19 +15,32 @@ void particle_controller::init()
         // random x and y position within bounds
         int rand_x = rand() % 64;
         int rand_y = rand() % 32;
-        particles.push_back(particle(rand_x, rand_y, time_mstr->millis_since_start()));
+        particles.push_back(particle(rand_x, rand_y));
     }
 }
 
 void particle_controller::do_time_step(vector_2 accel)
 {
+    uint64_t now_millis = time_mstr->millis_since_start();
+    const double delta_t_seconds = (now_millis - last_step_millis) / 1000.0;
+    last_step_millis = now_millis;
+
+    // implement kinematic equation to find change in velocity
+    // to be added to all particle
+    vector_2 delta_v = accel * delta_t_seconds;
+
     for (auto &particle : particles)
     {
-        particle.update_velocity(accel, time_mstr->millis_since_start());
+        particle.update_velocity(delta_v);
     }
 }
 
 int particle_controller::get_particle_count()
 {
     return particles.size();
+}
+
+void particle_controller::reset_step_time()
+{
+    last_step_millis = time_mstr->millis_since_start();
 }
