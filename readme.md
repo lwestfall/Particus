@@ -44,5 +44,8 @@ cmake ..
 cmake --build .
 ```
 
-If everything went well, we should be able to run now:
-`./Particus`
+If everything went well, we should be able to run now.
+
+*NOTE: you must include sudo for permissions to use the GPIO*
+
+`sudo ./Particus`
