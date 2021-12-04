@@ -13,14 +13,5 @@ void particle::update_position(double x, double y)
 
 void particle::update_velocity(vector_2 delta_v)
 {
-    std::cout << "DEBUG: previous vel: ";
-    velocity.print_coords();
-    std::cout << " / delta_v: ";
-
-    delta_v.print_coords();
-
-    std::cout << " / new: ";
     velocity = velocity + delta_v;
-    velocity.print_coords();
-    std::cout << std::endl;
 }
