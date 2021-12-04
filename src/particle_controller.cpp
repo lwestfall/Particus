@@ -35,6 +35,16 @@ void particle_controller::do_time_step(vector_2 accel)
     }
 }
 
+void particle_controller::add_random_particle()
+{
+    particle new_particle = particle(64 / 2, 32 / 2);
+    particles.push_back(new_particle);
+}
+void particle_controller::remove_particle()
+{
+    particles.pop_front();
+}
+
 int particle_controller::get_particle_count()
 {
     return particles.size();
