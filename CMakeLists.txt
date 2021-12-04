@@ -4,6 +4,16 @@ cmake_minimum_required(VERSION 3.12)
 project(Particus)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+set(PARENT_DIR ${PROJECT_SOURCE_DIR}/..)
+set(MPU_DIR ${PARENT_DIR}/MPU)
+set(CPDB_DIR ${PARENT_DIR}/CrossPlatformDataBus)
+set(EXTERNAL_SRC
+    ${MPU_DIR}/src/MPU.cpp
+    ${MPU_DIR}/src/MPU9250_Master_I2C.cpp
+    ${MPU_DIR}/src/MPU9250_Master.cpp
+    ${MPU_DIR}/src/MPU9250.cpp
+    ${CPDB_DIR}/extras/i2c/wiringpi/src/WiringPiI2C.cpp
+)
 
 # get required packages for opengl
 find_package(GLEW 2.0 REQUIRED)
@@ -19,17 +29,23 @@ add_executable(Particus
                 "src/particus.cpp"
                 "src/program_controller.cpp"
                 "src/vector_2.cpp"
+                ${EXTERNAL_SRC}
                 )
 
 # include directory
 target_include_directories(Particus PUBLIC
                             "${PROJECT_SOURCE_DIR}/include"
+                            "${MPU_DIR}/src"
+                            "${MPU_DIR}/extras/i2c/wiringpi/src"
+                            "${MPU_DIR}/extras/common"
+                            "${CPDB_DIR}/src"
                             ${pigpio_INCLUDE_DIR}
                             )
 
 target_link_libraries(Particus PUBLIC GLEW::GLEW)
 target_link_libraries(Particus PRIVATE glfw)
 target_link_libraries(Particus PRIVATE pigpio)
+target_link_libraries(Particus PRIVATE wiringPi)
 
 target_compile_options(Particus PRIVATE -Wno-psabi)
 

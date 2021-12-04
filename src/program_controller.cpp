@@ -10,8 +10,6 @@ program_controller::program_controller() : particle_ctrl(&time_mstr)
 
 void program_controller::init()
 {
-	std::cout << "program controller initialized" << std::endl;
-
 	// todo - change this to return a status code for exit
 	time_mstr.print_time();
 	std::cout << "program controller started" << std::endl;
@@ -22,7 +20,15 @@ void program_controller::init()
 			  << particle_ctrl.get_particle_count()
 			  << " random particles." << std::endl;
 
-	accel_ctrl.init();
+	std::cout << "initializing accelerometer... be patient" << std::endl;
+	std::cout << "CALIBRATING ACCELEROMETER BIASES - KEEP DEVICE FLAT" << std::endl;
+
+	int accel_status = accel_ctrl.init();
+
+	if (accel_status != 0)
+	{
+		std::cerr << "error initializing accelerometer, error code: " << accel_status << std::endl;
+	}
 	time_mstr.print_time();
 	std::cout << "accelerometer controller initialized" << std::endl;
 
@@ -50,7 +56,15 @@ void program_controller::run()
 		// loop until exit
 		uint64_t now_millis = time_mstr.millis_since_start();
 		vector_2 now_accel = accel_ctrl.get_accel();
-		particle_ctrl.do_time_step(now_accel);
+
+		if (accel_ctrl.get_valid_flag())
+		{
+			particle_ctrl.do_time_step(now_accel);
+		}
+		else
+		{
+			std::cerr << "ERROR: imu data check failed!!!!" << std::endl;
+		}
 
 		// handle button presses
 		uint8_t btns = btn_ctrl.get_button_states();
@@ -79,9 +93,11 @@ void program_controller::run()
 		// sleep until next frame for 30fps
 		uint64_t time_taken = time_mstr.millis_since_start() - now_millis;
 
-		// log current state
+		// log current state to terminal
 		time_mstr.print_time();
-		std::cout << "(" << particle_ctrl.get_particle_count() << ") Frame took " << time_taken << " ms." << std::endl;
+		std::cout << "(" << particle_ctrl.get_particle_count() << ") ( ";
+		now_accel.print_coords();
+		std::cout << ") Frame took " << time_taken << " ms." << std::endl;
 
 		if (time_taken < FRAME_MAX_TIME_MILLIS)
 		{
