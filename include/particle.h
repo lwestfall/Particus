@@ -7,7 +7,7 @@
 class particle
 {
 public:
-    particle(double x, double y);
+    particle(double x, double y, double vx, double vy);
     vector_2 get_velocity();
     void set_velocity(vector_2 velocity);
     void set_position(double x, double y);

@@ -12,10 +12,7 @@ void particle_controller::init()
 
     for (int i = 0; i < num_particles; i++)
     {
-        // random x and y position within bounds
-        int rand_x = rand() % DISP_COLS;
-        int rand_y = rand() % DISP_ROWS;
-        particles.push_back(particle(rand_x, rand_y));
+        add_random_particle();
     }
 }
 
@@ -39,9 +36,12 @@ void particle_controller::do_time_step(vector_2 accel)
 
 void particle_controller::add_random_particle()
 {
+    // random x and y position within bounds and random velocity
     int rand_x = rand() % DISP_COLS;
     int rand_y = rand() % DISP_ROWS;
-    particles.push_back(particle(rand_x, rand_y));
+    double rand_vx = (((double)rand() / (RAND_MAX)) - ((double)rand() / (RAND_MAX))) * 0.1;
+    double rand_vy = (((double)rand() / (RAND_MAX)) - ((double)rand() / (RAND_MAX))) * 0.1;
+    particles.push_back(particle(rand_x, rand_y, rand_vx, rand_vy));
 }
 void particle_controller::remove_particle()
 {

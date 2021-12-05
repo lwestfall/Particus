@@ -3,7 +3,7 @@
 #include "configuration.h"
 #include "particle.h"
 
-particle::particle(double x, double y) : exact_pos(x, y), velocity(0, 0)
+particle::particle(double x, double y, double vx, double vy) : exact_pos(x, y), velocity(vx, vy)
 {
 }
 
