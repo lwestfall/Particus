@@ -17,13 +17,13 @@ public:
     int get_particle_count();
     pixel_matrix *get_pixel_matrix();
     void reset_step_time();
-    void handle_collision(particle *p1, particle *p2);
 
 private:
     pixel_matrix pixels = {0};
     std::deque<particle> particles;
     uint64_t last_step_millis;
     time_master *time_mstr;
+    void handle_collision(particle *p1, particle *p2);
 };
 
 #endif /* PARTICLE_CONTROLLER */
