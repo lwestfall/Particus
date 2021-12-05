@@ -1,9 +1,10 @@
 #ifndef PARTICLE_CONTROLLER
 #define PARTICLE_CONTROLLER
 
-#include <deque>
+#include "configuration.h"
 #include "particle.h"
 #include "time_master.h"
+#include <deque>
 
 class particle_controller
 {
@@ -14,10 +15,11 @@ public:
     void add_random_particle();
     void remove_particle();
     int get_particle_count();
+    pixel_matrix *get_pixel_matrix();
     void reset_step_time();
 
 private:
-    // todo accelerometer_controller accel_ctrl;
+    pixel_matrix pixels = {0};
     std::deque<particle> particles;
     uint64_t last_step_millis;
     time_master *time_mstr;

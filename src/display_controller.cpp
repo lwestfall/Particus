@@ -1,25 +1,55 @@
 #include "display_controller.h"
+#include <algorithm>
 #include <iostream>
 
-int init() {
-    #ifdef SIM_DISP
+display_controller::display_controller(particle_controller *particle_ctrl)
+{
+    this->particle_ctrl = particle_ctrl;
+}
+
+int display_controller::init()
+{
+#ifdef SIM_DISP
     using namespace glm;
     // opengl init
-    if(!glfwInit())
+    if (!glfwInit())
     {
-        std::cerr << "Failed to initialize GLFW\n" << std::endl;
+        std::cerr << "Failed to initialize GLFW\n"
+                  << std::endl;
         return -1;
     }
-    #else
-    // todo - rgb display init
-    #endif
+#elif defined(TERM_SIM_DISP)
+// do nothing?
+#else
+// todo - rgb display init
+#endif
 
     return 0;
 }
 
-lit_pixel display_controller::add_pixel(uint8_t x, uint8_t y, uint8_t rgb) {
-    lit_pixel pixel = lit_pixel(x, y, rgb);
-    pixels.push_back(pixel);
-    return pixel;
-}
+void display_controller::redraw()
+{
+    pixel_matrix *pixels = particle_ctrl->get_pixel_matrix();
 
+#ifdef SIM_DISP
+    // opengl simulator
+    using namespace glm;
+#elif defined(TERM_SIM_DISP)
+    // terminal simulator
+    for (int y = 0; y < DISP_ROWS; y++)
+    {
+        for (int x = 0; x < DISP_COLS; x++)
+        {
+            uint8_t rgb = (*pixels)[x][y];
+            if (rgb)
+                std::cout << " ";
+            else
+                std::cout << "█";
+        }
+        std::cout << std::endl;
+    }
+#else
+    // rgb display
+    // todo
+#endif
+}

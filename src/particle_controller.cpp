@@ -31,7 +31,9 @@ void particle_controller::do_time_step(vector_2 accel)
 
     for (auto &particle : particles)
     {
-        particle.update_velocity(delta_v);
+        vector_2 new_vel = particle.add_velocity(delta_v);
+        vector_2 delta_xy = (new_vel / 2) * now_millis / 1000.0;
+        particle.add_position(delta_xy);
     }
 }
 
@@ -44,12 +46,32 @@ void particle_controller::add_random_particle()
 void particle_controller::remove_particle()
 {
     if (particles.size() > 0)
-    particles.pop_front();
+        particles.pop_front();
 }
 
 int particle_controller::get_particle_count()
 {
     return particles.size();
+}
+
+pixel_matrix *particle_controller::get_pixel_matrix()
+{
+    std::fill(&pixels[0][0], &pixels[0][0] + DISP_COLS * DISP_ROWS, 0);
+
+    for (auto particle : particles)
+    {
+        uint8_t x = particle.get_x_coord();
+        uint8_t y = particle.get_y_coord();
+
+        // sanity check
+        if (x >= 0 && x < DISP_COLS && y >= 0 && y < DISP_ROWS)
+        {
+            // todo - incorporate rgb
+            pixels[x][y] = 1;
+        }
+    }
+
+    return &pixels;
 }
 
 void particle_controller::reset_step_time()

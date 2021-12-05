@@ -3,6 +3,7 @@
 
 #include "accelerometer_controller.h"
 #include "button_controller.h"
+#include "display_controller.h"
 #include "particle_controller.h"
 #include "time_master.h"
 
@@ -14,10 +15,11 @@ public:
 	void run();
 
 private:
-	particle_controller particle_ctrl;
-	time_master time_mstr;
 	accelerometer_controller accel_ctrl;
 	button_controller btn_ctrl;
+	display_controller display_ctrl;
+	particle_controller particle_ctrl;
+	time_master time_mstr;
 };
 
 #endif /* PROGRAM_CONTROLLER */

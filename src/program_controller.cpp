@@ -4,7 +4,7 @@
 #include "program_controller.h"
 #include "vector_2.h"
 
-program_controller::program_controller() : particle_ctrl(&time_mstr)
+program_controller::program_controller() : particle_ctrl(&time_mstr), display_ctrl(&particle_ctrl)
 {
 }
 
@@ -13,6 +13,9 @@ void program_controller::init()
 	// todo - change this to return a status code for exit
 	time_mstr.print_time();
 	std::cout << "program controller started" << std::endl;
+
+	display_ctrl.init();
+	std::cout << "display controller initialized" << std::endl;
 
 	particle_ctrl.init();
 	time_mstr.print_time();
@@ -53,6 +56,7 @@ void program_controller::run()
 
 	for (;;)
 	{
+		std::cout << "\033c";
 		// loop until exit
 		uint64_t now_millis = time_mstr.millis_since_start();
 		vector_2 now_accel = accel_ctrl.get_accel();
@@ -98,6 +102,9 @@ void program_controller::run()
 		std::cout << "(" << particle_ctrl.get_particle_count() << ") ( ";
 		now_accel.print_coords();
 		std::cout << ") Frame took " << time_taken << " ms." << std::endl;
+
+		// display_ctrl.clear_pixels();
+		display_ctrl.redraw();
 
 		if (time_taken < FRAME_MAX_TIME_MILLIS)
 		{

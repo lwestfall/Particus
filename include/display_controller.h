@@ -1,13 +1,17 @@
 #ifndef DISPLAY_CONTROLLER
 #define DISPLAY_CONTROLLER
 
-#include "lit_pixel.h"
-#include <vector>
+#include "configuration.h"
+#include "particle_controller.h"
+#include <stdint.h>
 
-// comment the following line out to disable the simulator and enable the rgb display
-#define SIM_DISP
+// opengl simulator mode
+// #define OGL_SIM_DISP
 
-#ifdef SIM_DISP
+// terminal simulator mode
+#define TERM_SIM_DISP
+
+#ifdef OGL_SIM_DISP
 // includes for opengl display simulator
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -17,13 +21,14 @@
 class display_controller
 {
 public:
+    display_controller(particle_controller *particle_ctrl);
     int init();
-    lit_pixel add_pixel(uint8_t x, uint8_t y, uint8_t rgb);
     void redraw();
+
 private:
-    std::vector<lit_pixel> pixels;
-#ifdef SIM_DISP
-    GLFWwindow* display;
+    particle_controller *particle_ctrl;
+#ifdef OGL_SIM_DISP
+    GLFWwindow *display;
 #else
 // unknown_type display;
 #endif
