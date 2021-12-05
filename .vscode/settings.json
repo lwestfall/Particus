@@ -50,7 +50,8 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "csignal": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

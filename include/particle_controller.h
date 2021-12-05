@@ -1,7 +1,6 @@
 #ifndef PARTICLE_CONTROLLER
 #define PARTICLE_CONTROLLER
 
-#include "boundary.h"
 #include "configuration.h"
 #include "particle.h"
 #include "time_master.h"
@@ -19,7 +18,6 @@ public:
     pixel_matrix *get_pixel_matrix();
     void reset_step_time();
     void handle_collision(particle *p1, particle *p2);
-    void handle_collision(particle *p, boundary b);
 
 private:
     pixel_matrix pixels = {0};

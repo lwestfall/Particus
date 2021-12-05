@@ -10,6 +10,7 @@ void particle_controller::init()
 {
     // generate 50-100 particles
     int num_particles = rand() % 50 + 50;
+    // int num_particles = 1;
 
     for (int i = 0; i < num_particles; i++)
     {
@@ -27,9 +28,15 @@ void particle_controller::do_time_step(vector_2 accel)
     // to be added to all particle
     vector_2 delta_v = accel * delta_t_seconds;
 
+    // this controls the proportion of velocity lost due to drag
+    // 0 means no drag, 1 means very sticky drag (cancels all velocity)
+    double drag_coefficient = 0.1;
+
     for (auto &particle : particles)
     {
-        vector_2 new_vel = particle.add_velocity(delta_v);
+        vector_2 new_vel = particle.add_velocity(delta_v + delta_v * -drag_coefficient);
+
+        // another kinematic equation to calculate new position
         vector_2 delta_xy = (new_vel / 2) * now_millis / 1000.0;
         particle.add_position(delta_xy);
     }
@@ -62,10 +69,43 @@ pixel_matrix *particle_controller::get_pixel_matrix()
     // todo move collision detection to position update
     particle *particle_map[DISP_COLS][DISP_ROWS] = {nullptr};
 
-    for (auto particle : particles)
+    for (auto &particle : particles)
     {
-        uint8_t x = particle.get_x_coord();
-        uint8_t y = particle.get_y_coord();
+        // this dampens the bounce velocity, 0 is no bounce, 1 is perfectly elastic bounce
+        double bounciness = 0.8;
+
+        if (particle.get_position().get_x() < 0 && particle.get_velocity().get_x() < 0)
+        {
+            // left border collision
+            particle.set_velocity(vector_2(particle.get_velocity().get_x() * -bounciness, particle.get_velocity().get_y()));
+            particle.set_position(vector_2(0, particle.get_position().get_y()));
+        }
+
+        if (particle.get_position().get_x() > DISP_COLS - 1 && particle.get_velocity().get_x() > 0)
+        {
+            // right border collision
+            particle.set_velocity(vector_2(particle.get_velocity().get_x() * -bounciness, particle.get_velocity().get_y()));
+            particle.set_position(vector_2(DISP_COLS - 1, particle.get_position().get_y()));
+        }
+
+        if (particle.get_position().get_y() < 0 && particle.get_velocity().get_y() < 0)
+        {
+            // top border collision
+            particle.set_velocity(vector_2(particle.get_velocity().get_x(), particle.get_velocity().get_y() * -bounciness));
+            particle.set_position(vector_2(particle.get_position().get_x(), 0));
+        }
+
+        if (particle.get_position().get_y() > DISP_ROWS - 1 && particle.get_velocity().get_y() > 0)
+        {
+            // bottom border collision
+            particle.set_velocity(vector_2(particle.get_velocity().get_x(), particle.get_velocity().get_y() * -bounciness));
+            particle.set_position(vector_2(particle.get_position().get_x(), DISP_ROWS - 1));
+        }
+
+        vector_2 pos = particle.get_position();
+        vector_2 vel = particle.get_velocity();
+        uint8_t x = pos.get_x();
+        uint8_t y = pos.get_y();
 
         // sanity check
         if (x >= 0 && x < DISP_COLS && y >= 0 && y < DISP_ROWS)
