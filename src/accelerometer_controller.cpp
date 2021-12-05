@@ -49,7 +49,7 @@ vector_2 accelerometer_controller::get_accel()
         valid_flag = true;
 
         // flip axes - this is on purpose to get the orientation we want
-        return vector_2(ay - bias_y, ax - bias_x);
+        return vector_2(ay - bias_x, ax - bias_y);
     }
 
     valid_flag = false;
