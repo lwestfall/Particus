@@ -58,6 +58,8 @@ pixel_matrix *particle_controller::get_pixel_matrix()
 {
     std::fill(&pixels[0][0], &pixels[0][0] + DISP_COLS * DISP_ROWS, 0);
 
+    particle *particle_map[DISP_COLS][DISP_ROWS] = {nullptr};
+
     for (auto particle : particles)
     {
         uint8_t x = particle.get_x_coord();
@@ -67,7 +69,17 @@ pixel_matrix *particle_controller::get_pixel_matrix()
         if (x >= 0 && x < DISP_COLS && y >= 0 && y < DISP_ROWS)
         {
             // todo - incorporate rgb
-            pixels[x][y] = 1;
+            if (particle_map[x][y] == nullptr)
+            {
+                particle_map[x][y] = &particle;
+                pixels[x][y] = 1;
+            }
+            else
+            {
+                // particles collide
+                handle_collision(&particle, particle_map[x][y]);
+                pixels[x][y] = 2;
+            }
         }
     }
 
@@ -77,4 +89,12 @@ pixel_matrix *particle_controller::get_pixel_matrix()
 void particle_controller::reset_step_time()
 {
     last_step_millis = time_mstr->millis_since_start();
+}
+
+void particle_controller::handle_collision(particle *p1, particle *p2)
+{
+    // same mass objects exchange velocities on elastic collision
+    vector_2 temp = p1->get_velocity();
+    p1->set_velocity(p2->get_velocity());
+    p2->set_velocity(temp);
 }

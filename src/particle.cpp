@@ -7,6 +7,16 @@ particle::particle(double x, double y) : exact_pos(x, y), velocity(0, 0)
 {
 }
 
+vector_2 particle::get_velocity()
+{
+    return velocity;
+}
+
+void particle::set_velocity(vector_2 velocity)
+{
+    this->velocity = velocity;
+}
+
 void particle::set_position(double x, double y)
 {
     exact_pos.set_x(x);

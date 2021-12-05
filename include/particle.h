@@ -8,6 +8,8 @@ class particle
 {
 public:
     particle(double x, double y);
+    vector_2 get_velocity();
+    void set_velocity(vector_2 velocity);
     void set_position(double x, double y);
     vector_2 add_velocity(vector_2 delta_v);
     vector_2 add_position(vector_2 delta_xy);
