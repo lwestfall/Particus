@@ -1,6 +1,8 @@
 #ifndef VECTOR_2_H
 #define VECTOR_2_H
 
+#include <stdint.h>
+
 class vector_2
 {
 public:
@@ -13,6 +15,9 @@ public:
 	vector_2 operator+(vector_2 const &v);
 	vector_2 operator*(int const &i);
 	vector_2 operator*(double const &i);
+	vector_2 operator*(uint64_t const &l);
+	vector_2 operator/(int const &i);
+	vector_2 operator/(double const &i);
 
 private:
 	double x;

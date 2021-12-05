@@ -50,3 +50,18 @@ vector_2 vector_2::operator*(double const &d)
 {
 	return vector_2(x * d, y * d);
 }
+
+vector_2 vector_2::operator*(uint64_t const &l)
+{
+	return vector_2(x * l, y * l);
+}
+
+vector_2 vector_2::operator/(int const &i)
+{
+	return vector_2(x / i, y / i);
+}
+
+vector_2 vector_2::operator/(double const &d)
+{
+	return vector_2(x / d, y / d);
+}
