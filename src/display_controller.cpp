@@ -57,9 +57,9 @@ void display_controller::redraw()
         {
             uint8_t rgb = (*pixels)[x][y];
             if (rgb == 1)
-                cout << "█";
+                cout << "●";
             else if (rgb == 2)
-                cout << "X";
+                cout << "█";
             else
                 cout << " ";
         }
