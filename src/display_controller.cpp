@@ -35,19 +35,48 @@ void display_controller::redraw()
     // opengl simulator
     using namespace glm;
 #elif defined(TERM_SIM_DISP)
+    using std::cout;
+    using std::endl;
+
+    cout << "╔";
+
+    for (int x = 0; x < DISP_COLS; x++)
+    {
+        cout << "═";
+    }
+
+    cout << "╗";
+
+    cout << endl;
+
     // terminal simulator
     for (int y = 0; y < DISP_ROWS; y++)
     {
+        cout << "║";
         for (int x = 0; x < DISP_COLS; x++)
         {
             uint8_t rgb = (*pixels)[x][y];
             if (rgb)
-                std::cout << " ";
+                cout << "█";
             else
-                std::cout << "█";
+                cout << " ";
         }
-        std::cout << std::endl;
+
+        cout << "║";
+
+        cout << endl;
     }
+
+    cout << "╚";
+
+    for (int x = 0; x < DISP_COLS; x++)
+    {
+        cout << "═";
+    }
+
+    cout << "╝";
+    cout << endl;
+
 #else
     // rgb display
     // todo
