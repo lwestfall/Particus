@@ -1,4 +1,5 @@
 #include "particle_controller.h"
+#include <cmath>
 
 particle_controller::particle_controller(time_master *time_mstr)
 {
@@ -58,6 +59,7 @@ pixel_matrix *particle_controller::get_pixel_matrix()
 {
     std::fill(&pixels[0][0], &pixels[0][0] + DISP_COLS * DISP_ROWS, 0);
 
+    // todo move collision detection to position update
     particle *particle_map[DISP_COLS][DISP_ROWS] = {nullptr};
 
     for (auto particle : particles)
@@ -95,7 +97,10 @@ void particle_controller::handle_collision(particle *p1, particle *p2)
 {
     // same mass objects exchange velocities on elastic collision
     // inject randomness to simulate inelasticity and minor mass differences
-    vector_2 temp = p1->get_velocity() * (((double)rand() / (RAND_MAX)) * 0.2 + 0.85);
-    p1->set_velocity(p2->get_velocity() * (((double)rand() / (RAND_MAX)) * 0.2 + 0.85));
+    // todo - detect if one particle is against border and treat as border collision
+    double inelastic_coeff = ((double)rand() / (RAND_MAX)) * 0.2 + 0.85;
+    double mass_ratio = ((double)rand() / (RAND_MAX)) * 0.2 + 0.9;
+    vector_2 temp = p1->get_velocity() * inelastic_coeff * mass_ratio;
+    p1->set_velocity(p2->get_velocity() * inelastic_coeff * (1 / mass_ratio));
     p2->set_velocity(temp);
 }
