@@ -24,7 +24,7 @@ private:
     const MPU9250::Mmode_t MMODE = MPU9250::M_100Hz;
     const uint8_t SAMPLE_RATE_DIVISOR = 0x04;
     MPU9250_Master_I2C imu;
-    double scale_factor = 1; // this scales the acceleration so it can be tuned for the display
+    double scale_factor = 0.15; // this scales the acceleration so it can be tuned for the display
 };
 
 #endif /* ACCELEROMETER_CONTROLLER */
