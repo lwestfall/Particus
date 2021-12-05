@@ -94,7 +94,8 @@ void particle_controller::reset_step_time()
 void particle_controller::handle_collision(particle *p1, particle *p2)
 {
     // same mass objects exchange velocities on elastic collision
-    vector_2 temp = p1->get_velocity();
-    p1->set_velocity(p2->get_velocity());
+    // inject randomness to simulate inelasticity and minor mass differences
+    vector_2 temp = p1->get_velocity() * (((double)rand() / (RAND_MAX)) * 0.2 + 0.85);
+    p1->set_velocity(p2->get_velocity() * (((double)rand() / (RAND_MAX)) * 0.2 + 0.85));
     p2->set_velocity(temp);
 }
