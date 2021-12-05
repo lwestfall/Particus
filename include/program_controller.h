@@ -6,13 +6,14 @@
 #include "display_controller.h"
 #include "particle_controller.h"
 #include "time_master.h"
+#include <csignal>
 
 class program_controller
 {
 public:
 	program_controller();
-	void init();
-	void run();
+	int init();
+	int run();
 
 private:
 	accelerometer_controller accel_ctrl;

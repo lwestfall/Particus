@@ -4,15 +4,28 @@
 #include "program_controller.h"
 #include "vector_2.h"
 
+bool in_loop = false;
+bool exit_flag = false;
+int exit_code = 0;
+
+void user_terminate_handler(int signum);
+
 program_controller::program_controller() : particle_ctrl(&time_mstr), display_ctrl(&particle_ctrl)
 {
 }
 
-void program_controller::init()
+int program_controller::init()
 {
-	// todo - change this to return a status code for exit
+	if (btn_ctrl.init() != 0)
+	{
+		time_mstr.print_time();
+		std::cerr << "button controller failed to initialize!" << std::endl;
+		return -1;
+	}
 	time_mstr.print_time();
-	std::cout << "program controller started" << std::endl;
+	std::cout << "button controller initialized" << std::endl;
+
+	signal(SIGINT, user_terminate_handler);
 
 	display_ctrl.init();
 	std::cout << "display controller initialized" << std::endl;
@@ -31,30 +44,31 @@ void program_controller::init()
 	if (accel_status != 0)
 	{
 		std::cerr << "error initializing accelerometer, error code: " << accel_status << std::endl;
+		return -2;
 	}
 	time_mstr.print_time();
 	std::cout << "accelerometer controller initialized" << std::endl;
 
-	if (btn_ctrl.init() != 0)
+	if (exit_flag)
 	{
-		time_mstr.print_time();
-		std::cerr << "button controller failed to initialize!" << std::endl;
-		return;
+		return exit_code;
 	}
-	time_mstr.print_time();
-	std::cout << "button controller initialized" << std::endl;
 
 	std::cout << "program ready, press any key to begin main loop";
 	std::getchar();
 	std::cout << std::endl;
+
+	return 0;
 }
 
-void program_controller::run()
+int program_controller::run()
 {
 	const unsigned int FRAME_MAX_TIME_MILLIS = 1000 / 30;
 	particle_ctrl.reset_step_time();
 
-	for (;;)
+	in_loop = true;
+
+	while (!exit_flag)
 	{
 		std::cout << "\033c";
 		// loop until exit
@@ -115,4 +129,13 @@ void program_controller::run()
 			std::cout << "Frame took too long!" << std::endl;
 		}
 	}
+
+	return exit_code;
+}
+
+void user_terminate_handler(int signum)
+{
+	exit_flag = true;
+
+	exit_code = signum;
 }
