@@ -34,10 +34,11 @@ void particle_controller::do_time_step(vector_2 accel)
 
     for (auto &particle : particles)
     {
+        vector_2 init_vel = particle.get_velocity();
         vector_2 new_vel = particle.add_velocity(delta_v + delta_v * -drag_coefficient);
 
         // another kinematic equation to calculate new position
-        vector_2 delta_xy = (new_vel / 2) * now_millis / 1000.0;
+        vector_2 delta_xy = ((init_vel + new_vel) / 2) * now_millis / 1000.0;
         particle.add_position(delta_xy);
     }
 }
