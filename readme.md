@@ -35,7 +35,7 @@ For the next step, you should be back at the parent directory (where the Particu
 
 ### 3. Clone additional library sources
 
-There are two libraries needed for interacting with the MPU9250 over I2C. ** It is very important that the following commands are run from the parent directory.** Confirm with the command `ls`. You should see the Particus directory. If you don't see it, navigate to the directory containing it.
+There are two libraries needed for interacting with the MPU9250 over I2C. **It is very important that the following commands are run from the parent directory.** Confirm with the command `ls`. You should see the Particus directory. If you don't see it, navigate to the directory containing it.
 
 Then run:
 
@@ -49,6 +49,7 @@ git clone https://github.com/simondlevy/CrossPlatformDataBus.git
 Finally, we can try to build! Start by creating and going into the build directory:
 
 ```bash
+cd Particus
 mkdir build
 cd build
 ```
