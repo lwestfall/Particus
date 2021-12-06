@@ -84,6 +84,8 @@ int program_controller::run()
 			std::cerr << "ERROR: imu data check failed!!!!" << std::endl;
 		}
 
+		display_ctrl.redraw();
+
 		// handle button presses
 		uint8_t btns = btn_ctrl.get_button_states();
 		if (btns & 1)
@@ -116,9 +118,6 @@ int program_controller::run()
 		std::cout << "(" << particle_ctrl.get_particle_count() << ") ( ";
 		now_accel.print_coords();
 		std::cout << ") Frame took " << time_taken << " ms." << std::endl;
-
-		// display_ctrl.clear_pixels();
-		display_ctrl.redraw();
 
 		if (time_taken < FRAME_MAX_TIME_MILLIS)
 		{
